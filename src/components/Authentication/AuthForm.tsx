@@ -7,13 +7,16 @@ import {
         FormErrorMessage,
         chakra,
         Heading,
-        Box,
         Button,
         Link,
         Text,
         Flex
     } from '@chakra-ui/react'
 import { AuthValidator } from './AuthValidator'
+import {Link as routerlink} from 'react-router-dom'
+
+
+
 
 export const AuthForm =  (prop:propType )=> {
     const {initialValues ,formType, submitHandler} = prop
@@ -36,22 +39,23 @@ export const AuthForm =  (prop:propType )=> {
             </Heading>
             <Flex flexDirection='column' rowGap='8px'>
                {
-                formType==='Sign up' &&  <FormControl
+                formType==='Sign up' &&  
+                <FormControl
                     display='flex' flexDirection='column' 
-                    isInvalid={formik.errors.username!==undefined  && formik.touched.username}
-                >
-                <Input type='text' focusBorderColor='brand.golden'
-                 order='2'
-                 onBlur={formik.handleBlur}
-                 onChange={formik.handleChange}
-                 name='username'
-                 id='username'
-                 value={formik.values.username}
-                />
-                 <FormLabel order='1'>Username</FormLabel>  
-                <FormErrorMessage order='3'>
-                   {formik.errors.username}
-               </FormErrorMessage>
+                    isInvalid={formik.errors.username!==undefined  && formik.touched.username}>
+
+                    <Input type='text' focusBorderColor='brand.golden'
+                     order='2'
+                     onBlur={formik.handleBlur}
+                     onChange={formik.handleChange}
+                     name='username'
+                     id='username'
+                     value={formik.values.username}
+                    />
+                    <FormLabel order='1'>Username</FormLabel>  
+                    <FormErrorMessage order='3'>
+                       {formik.errors.username}
+                    </FormErrorMessage>
                </FormControl>
                }
 
@@ -124,19 +128,20 @@ export const AuthForm =  (prop:propType )=> {
                 >
                         {
                             formType==='Sign up' ? 'Create an account'
-                            :''
+                            :'Login in'
                         }
                 </Button>
-                <Link textAlign='center' color='black' 
+                <Link as= {routerlink} to= {formType ==='Sign up' ? '/login' : '/sign_up' }
+                 textAlign='center' color='black' 
                     textDecoration='none'
                 >
                     {
                         formType==='Sign up' ? 'Already have an account? '
-                        :''
+                        :'Dont have an account ?'
                     }  
                     <Text color='brand.golden' textDecoration='underline'>
                     {
-                        formType==='Sign up' ? 'Sign in':''
+                        formType==='Sign up' ? 'Sign in':'Sign up'
                     }
                     </Text>
                 </Link>

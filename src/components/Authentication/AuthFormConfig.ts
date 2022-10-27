@@ -1,9 +1,9 @@
 
 export type AuthFormConfig = {
-    username: string,
+    username ? : string,
     email: string,
     password: string,
-    confirmPassword:string
+    confirmPassword ? :string
 }
 
 type handlerType = (values:{})=> void 
