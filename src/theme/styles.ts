@@ -11,6 +11,12 @@ export const Style = {
     html: {
         h:'100%',
         w:'100%'
+    },
+
+    main:  {
+       w:'100%',
+       h:'100vh',
+       bg:'brand.white'
     }
 
 }
