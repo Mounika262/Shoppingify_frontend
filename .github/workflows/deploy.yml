@@ -38,19 +38,18 @@ jobs:
 
       - name: Deploy to S3 (only build files)
         run: |
-          # Sync only the build files (static assets) to the S3 bucket
           aws s3 sync ./build s3://${{ secrets.AWS_S3_BUCKET }} --delete
 
-      - name: Invalidate CloudFront Cache (Optional)
+      - name: Invalidate CloudFront Cache
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
 
       - name: Output Deployment URL
         run: |
-          DEPLOYMENT_URL="http://${{ secrets.AWS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
-          echo "Deployment complete! Your application is live at ${DEPLOYMENT_URL}"
-          echo "::set-output name=deployment-url::${DEPLOYMENT_URL}"
-          
+          CLOUDFRONT_URL="https://${{ secrets.CLOUDFRONT_DOMAIN }}"
+          echo "Deployment complete! Your application is live at ${CLOUDFRONT_URL}"
+          echo "CLOUDFRONT_URL=${CLOUDFRONT_URL}" >> $GITHUB_ENV
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
