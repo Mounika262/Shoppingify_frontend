@@ -47,8 +47,10 @@ jobs:
 
       - name: Output Deployment URL
         run: |
-          echo "Deployment complete! Your application is live at http://edubotfrontenddeployment.s3-website-us-east-1.amazonaws.com/"
-
+          DEPLOYMENT_URL="http://${{ secrets.AWS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
+          echo "Deployment complete! Your application is live at ${DEPLOYMENT_URL}"
+          echo "::set-output name=deployment-url::${DEPLOYMENT_URL}"
+          
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
