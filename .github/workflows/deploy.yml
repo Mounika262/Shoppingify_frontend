@@ -36,13 +36,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy to S3
+      - name: Deploy to S3 (only build files)
         run: |
+          # Sync only the build files (static assets) to the S3 bucket
           aws s3 sync ./build s3://${{ secrets.AWS_S3_BUCKET }} --delete
 
       - name: Invalidate CloudFront Cache (Optional)
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+
+      - name: Output Deployment URL
+        run: |
+          echo "Deployment complete! Your application is live at http://edubotfrontenddeployment.s3-website-us-east-1.amazonaws.com/"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
